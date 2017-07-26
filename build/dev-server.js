@@ -12,6 +12,7 @@ var webpack = require('webpack')
 var proxyMiddleware = require('http-proxy-middleware')
 var webpackConfig = require('./webpack.dev.conf')
 
+
 // default port where dev server listens for incoming traffic
 var port = process.env.PORT || config.dev.port
 // automatically open browser, if not set will be false
@@ -20,32 +21,37 @@ var autoOpenBrowser = !!config.dev.autoOpenBrowser
 // https://github.com/chimurai/http-proxy-middleware
 var proxyTable = config.dev.proxyTable
 
-var app = express()
+var app = express();
 
 const server = require('http').Server(app);
+
 const io = require('socket.io')(server);
 
-// const http = require('http');
-// const https = require('https');
+const http = require('http');
 
-// const bodyParser = require('body-parser');
+const https = require('https');
 
-io.on('connection',(socket) => {
+var bodyParser = require('body-parser');
+// var multer = require('multer');
 
-  socket.on('sendGroupMsg', (data) => {
-    socket.broadcast.emit('receiveGroupmsg', data);
-    console.log(data);
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+// app.use(multer()); // for parsing multipart/form-data
+
+io.on('connection', (socket) => {
+
+
+  // 群聊
+  socket.on('sendGroupMsg', function (data) {
+    socket.broadcast.emit('receiveGroupMsg', data);
   });
 
+  // 上线
   socket.on('online', name => {
-    socket.broadcast.emit('online', name);
-    console.log(name);
+    socket.broadcast.emit('online', name)
   });
 
 })
-
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
 
 
 var compiler = webpack(webpackConfig)
@@ -56,8 +62,7 @@ var devMiddleware = require('webpack-dev-middleware')(compiler, {
 })
 
 var hotMiddleware = require('webpack-hot-middleware')(compiler, {
-  log: () => {},
-  heartbeat: 2000
+  log: () => {}
 })
 // force page reload when html-webpack-plugin template changes
 compiler.plugin('compilation', function (compilation) {
@@ -86,6 +91,8 @@ app.use(devMiddleware)
 // compilation error display
 app.use(hotMiddleware)
 
+
+
 // serve pure static assets
 var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
 app.use(staticPath, express.static('./static'))
@@ -108,6 +115,7 @@ devMiddleware.waitUntilValid(() => {
 })
 
 // var server = app.listen(port)
+
 server.listen(port);
 
 module.exports = {

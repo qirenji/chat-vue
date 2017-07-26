@@ -8,11 +8,21 @@
   <body>
     <div id="app"></div>
     <!-- built files will be auto injected -->
-    <script src="./socket.io/socket.io.js"></script>
-    <!-- <script src="../socket.io/socket.io.js"></script> -->
+    <!-- <script src="./socket.io/socket.io.js"></script> -->
+    <script src="../socket.io/socket.io.js"></script>
 
     <script>
-    	const socket = io.connect('http://60.205.181.124:18004/')
+    	// const socket = io.connect('http://60.205.181.124:18004/')
+      const socket = io.connect('http://192.168.1.105:18004/')
+    </script>
+    <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ce268e8f61069a1636a4629acbb82b9a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
     </script>
   </body>
 </html>

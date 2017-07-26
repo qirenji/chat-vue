@@ -18,18 +18,18 @@ export default {
   },
   beforeCreate() {
   	if(localStorage.name) {
-  		this.$router.push('Chatting');
+  		this.$router.push('/chatting');
   	}
-  	console.log(localStorage.name)
   },
   methods: {
-  	login() {
-  		if(this.name === ''){
+    login() {
+    console.log(this.name);
+  		if(this.name == ''){
   			return;
   		}
   		this.$store.commit('changeName',this.name);
   		localStorage.name = this.name;
-  		this.$router.push('Chatting');
+  		this.$router.push({name: 'Chatting'});
   	}
   }
 }

@@ -6,26 +6,33 @@ var port = process.env.PORT || 18004;
 
 var app = express();
 
+app.use(express.static('./dist'));
 const server = require('http').Server(app);
+
 const io = require('socket.io')(server);
 
+const http = require('http');
 
-app.use(express.static('./dist'));
+const https = require('https');
 
-app.get("/",function(req,res){
-	res.render('index.html',{})
-})
+var bodyParser = require('body-parser');
+// var multer = require('multer');
 
-io.on('connection',(socket) => {
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+// app.use(multer()); // for parsing multipart/form-data
 
-  socket.on('sendGroupMsg', (data) => {
-    socket.broadcast.emit('receiveGroupmsg', data);
-    console.log(data);
+io.on('connection', (socket) => {
+
+
+  // 群聊
+  socket.on('sendGroupMsg', function (data) {
+    socket.broadcast.emit('receiveGroupMsg', data);
   });
 
+  // 上线
   socket.on('online', name => {
-    socket.broadcast.emit('online', name);
-    console.log(name);
+    socket.broadcast.emit('online', name)
   });
 
 })
