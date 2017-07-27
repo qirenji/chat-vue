@@ -193,6 +193,7 @@ export default {
 
       .chatting-menu {
       	position: absolute;
+        top: 20px;
       	right: 20px;
         width: 30px;
         height: 30px;
