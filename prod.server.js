@@ -22,7 +22,6 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 // app.use(multer()); // for parsing multipart/form-data
-const router = express.Router();
 app.use('/api',router);
 router.get('/content/:text', (req,res) => {
   let text = req.params.text;
