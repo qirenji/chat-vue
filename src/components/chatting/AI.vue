@@ -1,67 +1,68 @@
 <template>
-  <transition name="slide-left">
-    <div class="chatting">
 
-      <div class="chatting-header">
-        <div class="chatting-back">
-          <i @click="$router.push('/AI')" :class="isAI ? 'icon-back' : 'icon-back2'"></i>
-        </div>
-      	<div class="chatting-title">
-      		<h2><i class="icon-group"></i>多人聊天室</h2>
-      	</div>
-      	<div @click="back" class="chatting-menu"><i class="icon-menu"></i></div>
-      </div>
+	<transition name="slide-right">
+	  <div class="chatting">
 
-  		<div @click.stop.prevent="hideEmoji" class="chatting-content">
-  			<div v-for="item in msgs">
-  				<div v-if="item.self" class="chatting-item self clearfix">
-  					<div class="msg-date">
-  						{{item.date}}
-  					</div>
-  					<div class="msg-from">
-  						<span class="msg-author">{{item.from}}</span>
-  						<img :src="item.avatarUrl" alt="">
-  					</div>
-  					<div class="msg-content">{{item.content}}</div>
-  				</div>
-  				<div v-else class="chatting-item other clearfix">
-            <div class="msg-date">
-               {{ item.date }}
-            </div>
-            <div class="msg-from">
-              <img :src="item.avatarUrl" alt="">
-            	<span class="msg-author">{{ item.from }}</span>
-            </div>
-            <div class="msg-content">
-            	{{item.content }}
-            </div>
-          </div>
-  			</div>
+	    <div class="chatting-header">
+	      <div class="chatting-back">
+	        <i @click="$router.push('/chatting')" class="icon-back"></i>
+	      </div>
+	    	<div class="chatting-title">
+	    		<h2>AI智能机器人</h2>
+	    	</div>
+	    	<div @click="back" class="chatting-menu"><i class="icon-menu"></i></div>
+	    </div>
 
-  			<!-- <div class="online">
-           qi上线了
-        </div>
-  			<div class="online">
-           other上线了
-        </div> -->
-  		</div>
+			<div @click.stop.prevent="hideEmoji" class="chatting-content">
+				<div v-for="item in msgs">
+					<div v-if="item.self" class="chatting-item self clearfix">
+						<div class="msg-date">
+							{{item.date}}
+						</div>
+						<div class="msg-from">
+							<span class="msg-author">{{item.from}}</span>
+							<img :src="item.avatarUrl" alt="">
+						</div>
+						<div class="msg-content">{{item.content}}</div>
+					</div>
+					<div v-else class="chatting-item other clearfix">
+	          <div class="msg-date">
+	             {{ item.date }}
+	          </div>
+	          <div class="msg-from">
+	            <img :src="item.avatarUrl" alt="">
+	          	<span class="msg-author">{{ item.from }}</span>
+	          </div>
+	          <div class="msg-content">
+	          	{{item.content }}
+	          </div>
+	        </div>
+				</div>
 
-  		<div class="chatting-input">
-  			<div class="emoji">
-  				<i @click="showEmoji" class="icon-emoji"></i>
-  			</div>
-  			<textarea @keyup.enter="send" v-model.trim="inputContent" placeholder="请输入..." @focus="hideEmoji"></textarea>
-  			<button @click="send">发送</button>
-  		</div>
+				<!-- <div class="online">
+	         qi上线了
+	      </div>
+				<div class="online">
+	         other上线了
+	      </div> -->
+			</div>
 
-  		<div v-show="isShowEmoji" class="emoji-display">
-  			<ul>
-  				<li @click="insertText(item)" v-for="item in emojis">{{item}}</li>
-  			</ul>
-  		</div>
+			<div class="chatting-input">
+				<div class="emoji">
+					<i @click="showEmoji" class="icon-emoji"></i>
+				</div>
+				<textarea @keyup.enter="send" v-model.trim="inputContent" placeholder="请输入..." @focus="hideEmoji"></textarea>
+				<button @click="send">发送</button>
+			</div>
 
-    </div>
-  </transition>
+			<div v-show="isShowEmoji" class="emoji-display">
+				<ul>
+					<li @click="insertText(item)" v-for="item in emojis">{{item}}</li>
+				</ul>
+			</div>
+
+	  </div>
+	</transition>
 </template>
 
 <script>
@@ -69,16 +70,15 @@ export default {
   name: 'chatting',
   data() {
   	return{
-  		msgs: localStorage.msgs_group && JSON.parse(localStorage.msgs_group) || [],
+  		msgs: localStorage.msgs_ai && JSON.parse(localStorage.msgs_ai) || [],
   		emojis: ['😂', '🙏', '😄', '😏', '😇', '😅', '😌', '😘', '😍', '🤓', '😜', '😎', '😊', '😳', '🙄', '😱', '😒', '😔', '😷', '👿', '🤗', '😩', '😤', '😣', '😰', '😴', '😬', '😭', '👻', '👍', '✌️', '👉', '👀', '🐶', '🐷', '⚽️', '❤️'],
   		isShowEmoji: false,
-  		inputContent: '',
-      isAI: false
+  		inputContent: ''
   	}
   },
   watch: {
   	msgs(val) {
-  		localStorage.msgs_group = JSON.stringify(val);
+  		localStorage.msgs_ai = JSON.stringify(val);
   	}
   },
   computed: {
@@ -97,34 +97,14 @@ export default {
   	}
   },
   mounted() {
-    setInterval(() => this.isAI = !this.isAI, 1500)
 
   	this.oContent = document.querySelector('.chatting-content');
     this.oContent.scrollTop = this.oContent.scrollHeight;
-    this.oTextarea = document.querySelector('textarea');
 
-    socket.emit('online', this.$store.state.name);
-    // console.log(this.$store.state.name);
-    socket.on('online', (name) => {
-      if (!name) {
-        return;
-      }
-      let oOnline = document.createElement('div');
-      oOnline.className = 'online';
-      oOnline.innerText = name + '上线了';
-      this.oContent.appendChild(oOnline);
+    setTimeout(() => {
       this.oContent.scrollTop = this.oContent.scrollHeight;
-    });
+    }, 0);
 
-
-  	socket.on('receiveGroupMsg', data => {
-      this.msgs.push(data);
-      setTimeout(() => {
-        this.oContent.scrollTop = this.oContent.scrollHeight;
-      }, 0);
-    });
-
-    this.oContent.scrollTop = this.oContent.scrollHeight;
   },
   methods: {
   	back() {
@@ -145,13 +125,6 @@ export default {
   		if(this.inputContent === '') {
   			return;
   		}else{
-        // console.log(this.moment().format('YYYY-MM-DD HH:mm:ss'))
-  			socket.emit('sendGroupMsg', {
-  				date: this.moment().format('YYYY-MM-DD HH:mm:ss'),
-  				from: `${localStorage.name}`,
-  				content: this.inputContent,
-  				avatarUrl: this.avatarUrl
-  			});
   			this.msgs.push({
   				date: this.moment().format('YYYY-MM-DD HH:mm:ss'),
   				from: `${localStorage.name}`,
@@ -159,10 +132,39 @@ export default {
   				self: true,
   				avatarUrl: this.avatarUrl
   			});
-  			this.inputContent = '';
-  			setTimeout(() => this.oContent.scrollTop = this.oContent.scrollHeight, 100);
+
+  		setTimeout(() => this.oContent.scrollTop = this.oContent.scrollHeight, 0);
+  		console.log(this.inputContent)
+        this.axios.get('/api/content/'+this.inputContent)
+        .then(result => {
+           console.log(result)
+            this.msgs.push({
+              date: this.moment().format('MM-DD HH:mm:ss'),
+              from: '智能机器人',
+              content: result.data.content.replace(/{br}/g,'\n'),
+              self: false,
+              avatarUrl: 'http://omratag7g.bkt.clouddn.com/icon-ai.svg'
+            })
+          })
+          .then(() => {
+            this.oContent.scrollTop = this.oContent.scrollHeight;
+          })
+  			// this.axios.get(`http://api.qingyunke.com/api.php?key=free&appid=0&msg=`+this.inputContent)
+  			// .then(result => {
+  			// 		console.log(result)
+     //        this.msgs.push({
+     //          date: this.moment().format('MM-DD HH:mm:ss'),
+     //          from: '智能机器人',
+     //          content: result.data.content,
+     //          self: false,
+     //          avatarUrl: 'http://omratag7g.bkt.clouddn.com/icon-ai.svg'
+     //        })
+     //      })
+     //      .then(() => {
+     //        this.oContent.scrollTop = this.oContent.scrollHeight;
+     //      })
+        this.inputContent = '';
   		}
-      console.log(this.msgs);
   	}
   }
 }
@@ -187,17 +189,13 @@ export default {
       width: 100%;
       background-color: $blue;
       color: white;
-      padding: 5%;
+      padding: 5% ;
 
       .chatting-back {
         width: 32px;
         height: 32px;
         .icon-back {
-          background: url('../../common/icons/icon-ai.svg') no-repeat;
-          background-size: contain;
-        }
-        .icon-back2 {
-          background: url('../../common/icons/icon-ai2.svg') no-repeat;
+          background: url('../../common/icons/icon-group2.svg') no-repeat;
           background-size: contain;
         }
       }
@@ -252,7 +250,7 @@ export default {
         .msg-content {
           margin-top: 10px;
           background-color: white;
-          width: 200px;
+          width: 60%;
           padding: 10px 10px;
           border-radius: 10px;
         }

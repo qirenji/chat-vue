@@ -44,8 +44,26 @@ li {
     zoom: 1;
 }
 
+.slide-right-enter-active {
+  transition: all .4s ease;
+}
+.slide-right-leave-active {
+  transition: all .0 ease;
+}
+.slide-right-enter, .slide-right-active {
+  transform: translateX(375px);
+  opacity: 0;
+}
 
-
-
+.slide-left-enter-active {
+  transition: all .4s ease;
+}
+.slide-left-leave-active {
+  transition: all .0 ease;
+}
+.slide-left-enter, .slide-left-left-active {
+  transform: translateX(-375px);
+  opacity: 0;
+}
 
 

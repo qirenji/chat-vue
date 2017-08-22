@@ -23,6 +23,22 @@ var proxyTable = config.dev.proxyTable
 
 var app = express();
 
+const router = express.Router();
+app.use('/api',router);
+router.get('/content/:text', (req,res) => {
+  let text = req.params.text;
+  let searchResult = '';
+  let url = encodeURI('http://api.qingyunke.com/api.php?key=free&appid=0&msg='+ text)
+  http.get(url,response => {
+    response.on('data', data => {
+      searchResult += data;
+    })
+    response.on('end', () => {
+      res.json(JSON.parse(searchResult));
+    })
+  })
+})
+
 const server = require('http').Server(app);
 
 const io = require('socket.io')(server);
@@ -52,7 +68,6 @@ io.on('connection', (socket) => {
   });
 
 })
-
 
 var compiler = webpack(webpackConfig)
 

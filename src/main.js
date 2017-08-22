@@ -11,6 +11,7 @@ import VueAxios from 'vue-axios';
 // 本地化，中文时间显示
 moment.locale('zh-cn');
 
+Vue.prototype.HOST = '/api'
 Vue.prototype.moment = moment;
 
 Vue.prototype.random = n => Math.floor(n * Math.random());

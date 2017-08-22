@@ -4,7 +4,8 @@ var fs = require('fs')
 
 var port = process.env.PORT || 18004;
 
-var app = express();
+var app = express(); 
+var router = express.Router()
 
 app.use(express.static('./dist'));
 const server = require('http').Server(app);
@@ -21,9 +22,23 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 // app.use(multer()); // for parsing multipart/form-data
+const router = express.Router();
+app.use('/api',router);
+router.get('/content/:text', (req,res) => {
+  let text = req.params.text;
+  let searchResult = '';
+  let url = encodeURI('http://api.qingyunke.com/api.php?key=free&appid=0&msg='+ text)
+  http.get(url,response => {
+    response.on('data', data => {
+      searchResult += data;
+    })
+    response.on('end', () => {
+      res.json(JSON.parse(searchResult));
+    })
+  })
+})
 
 io.on('connection', (socket) => {
-
 
   // 群聊
   socket.on('sendGroupMsg', function (data) {
