@@ -168,7 +168,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   $blue: #2196f3;
 
   .chatting {
@@ -300,7 +300,7 @@ export default {
 
       }
       .online {
-        width: 200px;
+        // width: 200px;
         // max-width: 100%;
         margin: 3px auto;
         border-radius: 4px;
