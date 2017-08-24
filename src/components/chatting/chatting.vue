@@ -1,7 +1,7 @@
 <template>
   <transition name="slide-left">
     <div class="chatting">
-
+      <!-- 头部信息 -->
       <div class="chatting-header">
         <div class="chatting-back">
           <i @click="$router.push('/AI')" :class="isAI ? 'icon-back' : 'icon-back2'"></i>
@@ -11,7 +11,7 @@
       	</div>
       	<div @click="back" class="chatting-menu"><i class="icon-menu"></i></div>
       </div>
-
+      <!-- 聊天内容 -->
   		<div @click.stop.prevent="hideEmoji" class="chatting-content">
   			<div v-for="item in msgs">
   				<div v-if="item.self" class="chatting-item self clearfix">
@@ -45,7 +45,7 @@
            other上线了
         </div> -->
   		</div>
-
+      <!-- 聊天输入框 -->
   		<div class="chatting-input">
   			<div class="emoji">
   				<i @click="showEmoji" class="icon-emoji"></i>
@@ -53,7 +53,7 @@
   			<textarea @keyup.enter="send" v-model.trim="inputContent" placeholder="请输入..." @focus="hideEmoji"></textarea>
   			<button @click="send">发送</button>
   		</div>
-
+      <!-- 表情框 -->
   		<div v-show="isShowEmoji" class="emoji-display">
   			<ul>
   				<li @click="insertText(item)" v-for="item in emojis">{{item}}</li>
@@ -77,6 +77,7 @@ export default {
   	}
   },
   watch: {
+    //输入信息后就存入LocalStorage
   	msgs(val) {
   		localStorage.msgs_group = JSON.stringify(val);
   	}
@@ -91,20 +92,25 @@ export default {
   },
   beforeRouteEnter(to,from,next) {
   	if(!localStorage.name) {
+      // 没有名字返回登录页
   		next('/')
   	} else {
   		next();
   	}
   },
   mounted() {
+    // 左上角图标闪烁
     setInterval(() => this.isAI = !this.isAI, 1500)
 
   	this.oContent = document.querySelector('.chatting-content');
+    // 信息移动到最新
     this.oContent.scrollTop = this.oContent.scrollHeight;
     this.oTextarea = document.querySelector('textarea');
 
+    //上线发送名称信息 
     socket.emit('online', this.$store.state.name);
     // console.log(this.$store.state.name);
+    // 监听是否有上线的
     socket.on('online', (name) => {
       if (!name) {
         return;

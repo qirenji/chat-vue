@@ -2,7 +2,7 @@
 
 	<transition name="slide-right">
 	  <div class="chatting">
-
+      
 	    <div class="chatting-header">
 	      <div class="chatting-back">
 	        <i @click="$router.push('/chatting')" class="icon-back"></i>
@@ -135,6 +135,7 @@ export default {
 
   		setTimeout(() => this.oContent.scrollTop = this.oContent.scrollHeight, 0);
   		console.log(this.inputContent)
+      // 把发送的信息传到后端
         this.axios.get('/api/content/'+this.inputContent)
         .then(result => {
            console.log(result)
