@@ -26,8 +26,10 @@ var app = express();
 const router = express.Router();
 app.use('/api',router);
 router.get('/content/:text', (req,res) => {
+  // 获取发送来的参数
   let text = req.params.text;
   let searchResult = '';
+  // 对url进行编码操作
   let url = encodeURI('http://api.qingyunke.com/api.php?key=free&appid=0&msg='+ text)
   http.get(url,response => {
     response.on('data', data => {

@@ -17,6 +17,7 @@ export default {
   	}
   },
   beforeCreate() {
+    // 如果登陆过，直接跳转至聊天窗口
   	if(localStorage.name) {
   		this.$router.push('/chatting');
   	}

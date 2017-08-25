@@ -1,5 +1,5 @@
 <template>
-
+<!-- AI机器人界面 -->
 	<transition name="slide-right">
 	  <div class="chatting">
       
@@ -15,6 +15,7 @@
 
 			<div @click.stop.prevent="hideEmoji" class="chatting-content">
 				<div v-for="item in msgs">
+          <!-- 自己说的话 -->
 					<div v-if="item.self" class="chatting-item self clearfix">
 						<div class="msg-date">
 							{{item.date}}
@@ -25,6 +26,7 @@
 						</div>
 						<div class="msg-content">{{item.content}}</div>
 					</div>
+          <!-- 别人的发言 -->
 					<div v-else class="chatting-item other clearfix">
 	          <div class="msg-date">
 	             {{ item.date }}
@@ -38,7 +40,7 @@
 	          </div>
 	        </div>
 				</div>
-
+        <!-- 上线通知 -->
 				<!-- <div class="online">
 	         qi上线了
 	      </div>
@@ -46,15 +48,16 @@
 	         other上线了
 	      </div> -->
 			</div>
-
+      <!-- 聊天输入框 -->
 			<div class="chatting-input">
+        <!-- 表情按钮 -->
 				<div class="emoji">
 					<i @click="showEmoji" class="icon-emoji"></i>
 				</div>
 				<textarea @keyup.enter="send" v-model.trim="inputContent" placeholder="请输入..." @focus="hideEmoji"></textarea>
 				<button @click="send">发送</button>
 			</div>
-
+      <!-- 表情框 -->
 			<div v-show="isShowEmoji" class="emoji-display">
 				<ul>
 					<li @click="insertText(item)" v-for="item in emojis">{{item}}</li>
@@ -70,13 +73,17 @@ export default {
   name: 'chatting',
   data() {
   	return{
+      // 聊天数据
   		msgs: localStorage.msgs_ai && JSON.parse(localStorage.msgs_ai) || [],
   		emojis: ['😂', '🙏', '😄', '😏', '😇', '😅', '😌', '😘', '😍', '🤓', '😜', '😎', '😊', '😳', '🙄', '😱', '😒', '😔', '😷', '👿', '🤗', '😩', '😤', '😣', '😰', '😴', '😬', '😭', '👻', '👍', '✌️', '👉', '👀', '🐶', '🐷', '⚽️', '❤️'],
+      // 表情框控制
   		isShowEmoji: false,
+      // 输入内容
   		inputContent: ''
   	}
   },
   watch: {
+    // 监控聊天数据，实时存储到本地
   	msgs(val) {
   		localStorage.msgs_ai = JSON.stringify(val);
   	}
@@ -91,13 +98,14 @@ export default {
   },
   beforeRouteEnter(to,from,next) {
   	if(!localStorage.name) {
+      // 如果没有名字，跳转到首页
   		next('/')
   	} else {
   		next();
   	}
   },
   mounted() {
-
+    // 更新聊天内容到底部
   	this.oContent = document.querySelector('.chatting-content');
     this.oContent.scrollTop = this.oContent.scrollHeight;
 
@@ -121,10 +129,12 @@ export default {
   		this.isShowEmoji = false;
   	},
   	send() {
+      // 关闭表情框
   		this.isShowEmoji = false;
   		if(this.inputContent === '') {
   			return;
   		}else{
+        // 把内容存储到msgs
   			this.msgs.push({
   				date: this.moment().format('YYYY-MM-DD HH:mm:ss'),
   				from: `${localStorage.name}`,
@@ -132,7 +142,7 @@ export default {
   				self: true,
   				avatarUrl: this.avatarUrl
   			});
-
+        // 更新显示内容区域
   		setTimeout(() => this.oContent.scrollTop = this.oContent.scrollHeight, 0);
   		console.log(this.inputContent)
       // 把发送的信息传到后端
@@ -164,6 +174,7 @@ export default {
      //      .then(() => {
      //        this.oContent.scrollTop = this.oContent.scrollHeight;
      //      })
+        // 清空出入框内容
         this.inputContent = '';
   		}
   	}

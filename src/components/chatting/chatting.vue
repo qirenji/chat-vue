@@ -122,7 +122,7 @@ export default {
       this.oContent.scrollTop = this.oContent.scrollHeight;
     });
 
-
+    // 监听是否有人在发送信息
   	socket.on('receiveGroupMsg', data => {
       this.msgs.push(data);
       setTimeout(() => {
@@ -151,6 +151,7 @@ export default {
   		if(this.inputContent === '') {
   			return;
   		}else{
+        // 发送信息到socket.io
         // console.log(this.moment().format('YYYY-MM-DD HH:mm:ss'))
   			socket.emit('sendGroupMsg', {
   				date: this.moment().format('YYYY-MM-DD HH:mm:ss'),
@@ -158,6 +159,7 @@ export default {
   				content: this.inputContent,
   				avatarUrl: this.avatarUrl
   			});
+        // 信息存储到本地
   			this.msgs.push({
   				date: this.moment().format('YYYY-MM-DD HH:mm:ss'),
   				from: `${localStorage.name}`,
@@ -165,7 +167,9 @@ export default {
   				self: true,
   				avatarUrl: this.avatarUrl
   			});
+        // 清空聊天框
   			this.inputContent = '';
+        // 更新聊天内容框
   			setTimeout(() => this.oContent.scrollTop = this.oContent.scrollHeight, 100);
   		}
       console.log(this.msgs);
