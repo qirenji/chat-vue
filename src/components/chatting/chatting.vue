@@ -50,7 +50,7 @@
   			<div class="emoji">
   				<i @click="showEmoji" class="icon-emoji"></i>
   			</div>
-  			<textarea @keyup.enter="send" v-model.trim="inputContent" placeholder="请输入..." @focus="hideEmoji"></textarea>
+  			<textarea @keyup.enter="send" v-model.trim="inputContent" placeholder="左上角点击切换智能机器人..." @focus="hideEmoji"></textarea>
   			<button @click="send">发送</button>
   		</div>
       <!-- 表情框 -->
