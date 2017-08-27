@@ -2,7 +2,7 @@
 
 > socket.io聊天室
 
-博客地址：
+博客地址：http://www.qirenji.info/2017/07/27/Vue-js-Socket-io-智能聊天室/
 
 ## Build Setup
 
@@ -24,10 +24,12 @@ node prod.server.js -----打包后运行
 在线预览地址 👉 http://60.205.181.124:18004/
 
 多人群聊效果预览
-![多人群聊效果图](http://www.qirenji.info/img/chat-vue/chat.png)
+
+<img src="http://www.qirenji.info/img/chat-vue/chat.png" width="320">
 
 智能机器人聊天效果预览
-![智能机器人聊天效果图](http://www.qirenji.info/img/chat-vue/ai.png)
+
+<img src="http://www.qirenji.info/img/chat-vue/chat.png" width="320">
 
 
 ## 技术栈
