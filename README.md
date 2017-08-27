@@ -29,7 +29,7 @@ node prod.server.js -----打包后运行
 
 智能机器人聊天效果预览
 
-<img src="http://www.qirenji.info/img/chat-vue/chat.png" width="320">
+<img src="http://www.qirenji.info/img/chat-vue/ai.png" width="320">
 
 
 ## 技术栈
